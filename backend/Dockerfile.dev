@@ -1,0 +1,19 @@
+FROM ruby:3.2-slim
+
+ENV APP_ROOT /tutorial-app
+ENV TZ Asia/Tokyo
+
+RUN mkdir $APP_ROOT
+WORKDIR $APP_ROOT
+
+# NOTE:
+# - vimはRailsのcredentials:editのためにインストール
+# - webpackerを使わないためnodejsは不要
+RUN apt update
+RUN apt upgrade -y
+RUN apt install -y git tzdata vim
+RUN apt install -y build-essential libpq-dev # slimで追加が必要なパッケージ
+RUN gem install bundler
+RUN rm -rf /var/cache/apt/*
+
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]

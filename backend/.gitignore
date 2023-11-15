@@ -1,0 +1,17 @@
+.bundle
+.byebug_history
+.env
+.env.production
+
+log/*
+!log/.keep
+
+spec/tmp
+
+tmp/*
+!tmp/.keep
+
+vendor/bundle
+
+config/credentials/*
+!config/credentials/*.enc
