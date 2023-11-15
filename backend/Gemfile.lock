@@ -75,13 +75,19 @@ GEM
       minitest (>= 5.1)
       mutex_m
       tzinfo (~> 2.0)
+    ast (2.4.2)
     base64 (0.2.0)
     bigdecimal (3.1.4)
+    bootsnap (1.17.0)
+      msgpack (~> 1.2)
     builder (3.2.4)
     concurrent-ruby (1.2.2)
     connection_pool (2.4.1)
     crass (1.0.6)
     date (3.3.4)
+    debug (1.8.0)
+      irb (>= 1.5.0)
+      reline (>= 0.3.1)
     drb (2.2.0)
       ruby2_keywords
     erubi (1.12.0)
@@ -93,6 +99,10 @@ GEM
     irb (1.9.0)
       rdoc
       reline (>= 0.3.8)
+    json (2.6.3)
+    jsonapi-serializer (2.2.0)
+      activesupport (>= 4.2)
+    language_server-protocol (3.17.0.3)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -104,6 +114,7 @@ GEM
     marcel (1.0.2)
     mini_mime (1.1.5)
     minitest (5.20.0)
+    msgpack (1.7.2)
     mutex_m (0.2.0)
     net-imap (0.4.5)
       date
@@ -117,8 +128,18 @@ GEM
     nio4r (2.5.9)
     nokogiri (1.15.4-aarch64-linux)
       racc (~> 1.4)
+    nokogiri (1.15.4-arm64-darwin)
+      racc (~> 1.4)
+    parallel (1.23.0)
+    parser (3.2.2.4)
+      ast (~> 2.4.1)
+      racc
+    pg (1.5.4)
+    prism (0.17.1)
     psych (5.1.1.1)
       stringio
+    puma (6.4.0)
+      nio4r (~> 2.0)
     racc (1.7.3)
     rack (3.0.8)
     rack-session (2.0.0)
@@ -157,17 +178,54 @@ GEM
       rake (>= 12.2)
       thor (~> 1.0, >= 1.2.2)
       zeitwerk (~> 2.6)
+    rainbow (3.1.1)
     rake (13.1.0)
     rdoc (6.6.0)
       psych (>= 4.0.0)
+    regexp_parser (2.8.2)
     reline (0.4.0)
       io-console (~> 0.5)
+    rexml (3.2.6)
+    rubocop (1.51.0)
+      json (~> 2.3)
+      parallel (~> 1.10)
+      parser (>= 3.2.0.0)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.8, < 3.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.28.0, < 2.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 2.4.0, < 3.0)
+    rubocop-ast (1.30.0)
+      parser (>= 3.2.1.0)
+    rubocop-capybara (2.19.0)
+      rubocop (~> 1.41)
+    rubocop-factory_bot (2.24.0)
+      rubocop (~> 1.33)
+    rubocop-performance (1.18.0)
+      rubocop (>= 1.7.0, < 2.0)
+      rubocop-ast (>= 0.4.0)
+    rubocop-rails (2.19.1)
+      activesupport (>= 4.2.0)
+      rack (>= 1.1)
+      rubocop (>= 1.33.0, < 2.0)
+    rubocop-rspec (2.22.0)
+      rubocop (~> 1.33)
+      rubocop-capybara (~> 2.17)
+      rubocop-factory_bot (~> 2.22)
+    ruby-lsp (0.12.3)
+      language_server-protocol (~> 3.17.0)
+      prism (>= 0.17.1, < 0.18)
+      sorbet-runtime (>= 0.5.5685)
+    ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
+    sorbet-runtime (0.5.11128)
     stringio (3.0.9)
     thor (1.3.0)
     timeout (0.4.1)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    unicode-display_width (2.5.0)
     webrick (1.8.1)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
@@ -176,9 +234,24 @@ GEM
 
 PLATFORMS
   aarch64-linux
+  arm64-darwin-22
 
 DEPENDENCIES
-  rails (~> 7.1.0)
+  bootsnap
+  debug
+  jsonapi-serializer (~> 2.2.0)
+  pg (~> 1.1)
+  puma (>= 5.0)
+  rails (~> 7.1.2)
+  rubocop (~> 1.51.0)
+  rubocop-performance (~> 1.18.0)
+  rubocop-rails (~> 2.19.1)
+  rubocop-rspec (~> 2.22.0)
+  ruby-lsp
+  tzinfo-data
+
+RUBY VERSION
+   ruby 3.2.2p53
 
 BUNDLED WITH
    2.4.22

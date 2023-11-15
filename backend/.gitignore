@@ -15,3 +15,6 @@ vendor/bundle
 
 config/credentials/*
 !config/credentials/*.enc
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key

@@ -1,0 +1,243 @@
+# The behavior of RuboCop can be controlled via the .rubocop.yml
+# configuration file. It makes it possible to enable/disable
+# certain cops (checks) and to alter their behavior if they accept
+# any parameters. The file can be placed either in your home
+# directory or in some project directory.
+#
+# RuboCop will start looking for the configuration file in the directory
+# where the inspected file is and continue its way up to the root directory.
+#
+# See https://docs.rubocop.org/rubocop/configuration
+
+require:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-performance
+
+inherit_mode:
+  merge:
+    - Exclude
+
+AllCops:
+  TargetRubyVersion: 3.2
+  NewCops: enable
+  Exclude:
+    - "bin/**/*"
+    - "db/**/*.rb"
+    - 'tmp/**/*'
+    - 'log/**/*'
+    - 'coverage/**/*'
+    - 'open_api/**/*'
+    - 'vendor/**/*'
+
+
+
+Bundler/OrderedGems:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+
+Naming/MemoizedInstanceVariableName:
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+Naming/MethodParameterName:
+  MinNameLength: 1 
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/EmptyElse:
+  EnforcedStyle: empty
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+
+Style/NumericPredicate:
+  Enabled: false
+
+
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+
+Style/PercentLiteralDelimiters:
+  Enabled: false
+
+
+Style/RaiseArgs:
+  Enabled: false
+
+
+Style/SymbolArray:
+  Enabled: false
+
+Style/UnlessLogicalOperators:
+  Enabled: true
+  EnforcedStyle: forbid_logical_operators
+
+
+Style/WordArray:
+  Enabled: false
+
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+
+Style/RegexpLiteral:
+  Enabled: false
+
+
+
+Style/FormatStringToken:
+  Enabled: false
+
+
+
+Style/AccessorGrouping:
+  Enabled: false
+
+
+Layout/LineLength:
+  Enabled: false
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+
+
+
+
+
+
+Rails/BulkChangeTable:
+  Enabled: false
+
+
+Rails/RakeEnvironment:
+  Enabled: false
+
+
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - "spec/**/*.rb"
+
+
+
+Rails/DuplicateAssociation:
+  Enabled: false
+
+
+
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+
+Lint/AmbiguousBlockAssociation:
+  AllowedMethods: [change]
+
+
+Lint/RedundantCopDisableDirective:
+  Enabled: false
+
+
+
+Lint/DuplicateBranch:
+  Enabled: false
+
+
+
+
+
+
+
+RSpec/AnyInstance:
+  Enabled: false
+
+
+RSpec/BeforeAfterAll:
+  Enabled: false
+
+
+RSpec/DescribeClass:
+  Enabled: false
+
+
+RSpec/ExampleLength:
+  Enabled: false
+
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+
+RSpec/RepeatedExample:
+  Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+
+RSpec/IndexedLet:
+  Enabled: false
+
+Performance/Caller:
+  Enabled: false
+
+Performance/Casecmp:
+  Enabled: false
+
+Performance/MethodObjectAsBlock:
+  Enabled: false

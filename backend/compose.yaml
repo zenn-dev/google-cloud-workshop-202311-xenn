@@ -11,7 +11,7 @@ services:
     image: postgres:14
     container_name: tutorial_db
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/tutorial_data
     ports:
       - "5432:5432"
     environment:
