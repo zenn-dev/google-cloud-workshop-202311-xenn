@@ -3,22 +3,33 @@ import { formatDate } from "@utils/dayjs";
 
 // このファイルではキャッシュ無効
 // refs: https://www.boag.online/notepad/post/how-to-stop-next-js-app-router-api-endpoint-caching
-export const revalidate = 0
+export const revalidate = 0;
 
 export default async function Page() {
   const data = await getArticles();
-  console.log({ data: JSON.stringify(data) });
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="flex flex-col gap-16 text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-1 lg:text-left">
+    <main className="flex min-h-screen flex-col items-center justify-between px-24 py-8">
+      <div className="container mx-auto flex flex-col gap-24 lg:max-w-5xl lg:w-full">
+        <nav className="flex items-center justify-between">
+          <a href="/articles" className="text-xl font-bold">
+            Xenn
+          </a>
+          <a
+            href="/articles/new"
+            className="text-md font-bold bg-purple-700 px-4 py-2 rounded-sm"
+          >
+            新規作成
+          </a>
+        </nav>
+      </div>
+      <div className="flex flex-col gap-16 text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-1 lg:text-left mt-24">
         {data.articles.map((article) => (
           <article key={article.id}>
-            <a
-              href={`/articles/${article.slug}`}
-              rel="noopener noreferrer"
-            ><h2 className="text-4xl font-bold">{article.title}</h2>
+            <a href={`/articles/${article.slug}`} rel="noopener noreferrer">
+              <h2 className="text-4xl font-bold">{article.title}</h2>
               <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-                {formatDate(article.createdAt, {format: 'YYYY年MM月DD日'})}に作成
+                {formatDate(article.createdAt, { format: "YYYY年MM月DD日" })}
+                に作成
               </p>
             </a>
           </article>

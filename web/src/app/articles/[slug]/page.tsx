@@ -8,15 +8,20 @@ import markdownToHtml from "zenn-markdown-html";
 export const revalidate = 0;
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  const data = await getArticle({ slug: params.slug });
-  const article = data.article;
+  const { article } = await getArticle({ slug: params.slug });
   const html = markdownToHtml(article.bodyMarkdown);
   return (
     <main className="flex min-h-screen flex-col justify-between gap-64 pl-64 pr-64">
       <div className="flex flex-col gap-32">
-        <nav className="pt-4">
-          <a href="/articles" className="text-lg font-bold">
-            もどる
+        <nav className="flex items-center justify-between pt-4">
+          <a href="/articles" className="text-xl font-bold">
+            Xenn
+          </a>
+          <a
+            href={`/articles/${article.slug}/edit`}
+            className="text-md font-bold bg-purple-700 px-4 py-2 rounded-sm"
+          >
+            編集する
           </a>
         </nav>
         <div className="flex flex-col gap-16 text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-1 lg:text-left pb-64">

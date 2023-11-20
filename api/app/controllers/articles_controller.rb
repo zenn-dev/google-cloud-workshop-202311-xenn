@@ -9,14 +9,26 @@ class ArticlesController < ApplicationController
     render json: { article: ArticleSerializer.new(article, params: { edit: true }).to_h }
   end
 
-  def new
+  def edit
+    article = Article.find_by(slug: params[:slug])
+    render json: { article: ArticleSerializer.new(article, params: { edit: true }).to_h }
+  end
+
+  def create
     create_params = article_params.merge(slug: SecureRandom.hex(10))
 
-    if Article.new(**create_params).save
-      render json: { message: "success" }, status: :ok
+    article = Article.new(**create_params)
+    if article.save
+      render json: { article: ArticleSerializer.new(article).to_h }
     else
       render json: { message: "error" }, status: :internal_server_error
     end
+  end
+
+  def update
+    article = Article.find_by(slug: params[:slug])
+    article.update(**article_params)
+    render json: { article: ArticleSerializer.new(article, params: { edit: true }).to_h }
   end
 
   private
