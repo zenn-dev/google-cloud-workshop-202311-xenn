@@ -9,22 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "camelcase-keys": "^8.0.2",
+    "dayjs": "^1.11.10",
+    "next": "14.0.2",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.0.2",
-    "camelcase-keys": "^8.0.2",
     "snakecase-keys": "^5.4.5",
-    "swr": "^2.2.2"
+    "swr": "^2.2.2",
+    "zenn-content-css": "^0.1.149",
+    "zenn-markdown-html": "^0.1.149"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.2",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
-    "eslint": "^8",
-    "eslint-config-next": "14.0.2"
+    "typescript": "^5"
   }
 }
