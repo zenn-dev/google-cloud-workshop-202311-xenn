@@ -91,6 +91,8 @@ GEM
     drb (2.2.0)
       ruby2_keywords
     erubi (1.12.0)
+    faker (2.18.0)
+      i18n (>= 1.6, < 2)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.1)
@@ -239,6 +241,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   debug
+  faker (~> 2)
   jsonapi-serializer (~> 2.2.0)
   pg (~> 1.1)
   puma (>= 5.0)

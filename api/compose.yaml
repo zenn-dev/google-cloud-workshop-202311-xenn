@@ -2,9 +2,9 @@ version: "3"
 
 volumes:
   db-data:
-  backend-bundle:
-  backend-vendor:
-  backend-tmp:
+  api-bundle:
+  api-vendor:
+  api-tmp:
 
 services:
   db:
@@ -17,10 +17,10 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-  tutorial:
+  api:
     build:
       dockerfile: Dockerfile.dev
-    container_name: tutorial
+    container_name: api
     ports:
       - "8080:8080"
     command: > # 残っているかもしれないプロセスを消してから立ち上げる
@@ -28,13 +28,13 @@ services:
       bundle exec rails s -p 8080 -b '0.0.0.0'"
     volumes:
       # コンテナのグローバルにインストールされたgemを、Docker Volumeにキャッシュとして保存する
-      - backend-bundle:/usr/local/bundle
+      - api-bundle:/usr/local/bundle
       # アプリケーションのソースコードをコンテナにマウントする
       - .:/tutorial-app
       # 以下はパフォーマンスのためローカルをマウントしない
-      - backend-vendor:/tutorial-app/vendor
+      - api-vendor:/tutorial-app/vendor
     environment:
-      BACKEND_TEMP_ROOT_URL: ${BACKEND_TEMP_ROOT_URL:-http://localhost:8080} # Option
+      API_TEMP_ROOT_URL: ${API_TEMP_ROOT_URL:-http://localhost:8080} # Option
     depends_on:
       - db
     tty: true

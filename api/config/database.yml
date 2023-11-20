@@ -29,7 +29,7 @@ development:
 
 test:
   <<: *default
-  database: zenn_app_test
+  database: tutorial_app_test
   host: <%= ENV.fetch("DB_HOST", "db") %> # ENVはCI用
   port: 5432
   username: postgres
