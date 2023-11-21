@@ -113,11 +113,14 @@ gcloud run jobs deploy rails-command \
 --args=db:migrate,db:migrate:status
 
 gcloud run deploy xenn-api \
-  --image asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api \
-  --service-account $XENN_CLOUD_RUN_SERVICE_ACCOUNT \
-  --add-cloudsql-instances=$CLOUD_SQL_INSTANCE_NAME \
-  --allow-unauthenticated
-  ```
+--image=asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api \
+--service-account=$XENN_CLOUD_RUN_SERVICE_ACCOUNT \
+--add-cloudsql-instances=$CLOUD_SQL_INSTANCE_NAME \
+--allow-unauthenticated \
+--set-env-vars=RAILS_ENV=production \
+--set-env-vars=RAILS_MASTER_KEY=$RAILS_MASTER_KEY \
+--set-env-vars=CLOUD_SQL_CONNECTION_HOST=$CLOUD_SQL_CONNECTION_HOST
+```
 
 ## チェックポイント
 
@@ -142,3 +145,15 @@ gcloud sql connect xenn-db --user=postgres --database=postgres
 ```
 
 DBデータSEEDの実行
+
+## Webアプリケーションのデプロイ
+
+Next.js を Cloud Run へデプロイします。
+
+TODO: バックエンドアプリのURLを.envへ反映する
+
+```sh
+cd ~/$GITHUB_REPOSITORY_NAME/api && \
+gcloud builds submit . \
+  --tag asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api && \
+```
