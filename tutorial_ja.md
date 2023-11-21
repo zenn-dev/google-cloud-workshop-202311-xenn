@@ -313,7 +313,7 @@ touch db/migrate/20231122144137_add_body_html_to_article.rb
 
 以下のようにDBのマイグレーションファイルを修正します。コピーしてください。
 
-```sh
+```ruby
 class AddBodyHtmlToArticle < ActiveRecord::Migration[7.1]
   def change
     add_column :articles, :body_html, :text
@@ -323,13 +323,73 @@ end
 
 ### 修正（画面説明）
 
-記事詳細画面の表示速度を上げるために、Next.jsで MarkdownをHTMLへ変換しているところ、Markdown保存時にHTMLを変換してDBへ保存することにしました。
+記事詳細画面の表示速度を上げるために、Next.jsで MarkdownをHTMLへ変換しているところ、Markdown保存時にHTMLを変換してDBへ保存することにしました。画面の説明に従い、以下を修正してください。
 
-- 
-
-
+- Articleモデルを修正
+  - Rails で Markdown を保存するときにHTMLへ変換して保存するよう修正
+  - 外部のMarkdown変換ロジック（Cloud Functions）を使う
+- HTMLを返すようにシリアライザ・コントローラーを修正
+- Next.js でHTMLを使い、変換ロジックは破棄するように修正
 
 ### 再デプロイ
+
+前回デプロイ時と同じコマンドでデプロイします。
+
+```sh
+cd ~/$GITHUB_REPOSITORY_NAME/api && \
+gcloud builds submit . \
+--tag asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api && \
+
+gcloud run jobs deploy rails-command \
+--quiet \
+--project=$GOOGLE_CLOUD_PROJECT \
+--image=asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api \
+--service-account=$XENN_CLOUD_RUN_SERVICE_ACCOUNT \
+--set-cloudsql-instances=$CLOUD_SQL_INSTANCE_NAME \
+--cpu=1 \
+--task-timeout=60m \
+--max-retries=0 \
+--parallelism=1 \
+--set-env-vars=RAILS_ENV=production \
+--set-env-vars=RAILS_MASTER_KEY=$RAILS_MASTER_KEY \
+--set-env-vars=CLOUD_SQL_CONNECTION_HOST=$CLOUD_SQL_CONNECTION_HOST \
+--command=bundle,exec,rails \
+--args=db:migrate,db:migrate:status && \
+
+gcloud run deploy xenn-api \
+--image=asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api \
+--service-account=$XENN_CLOUD_RUN_SERVICE_ACCOUNT \
+--add-cloudsql-instances=$CLOUD_SQL_INSTANCE_NAME \
+--allow-unauthenticated \
+--set-env-vars=RAILS_ENV=production \
+--set-env-vars=RAILS_MASTER_KEY=$RAILS_MASTER_KEY \
+--set-env-vars=CLOUD_SQL_CONNECTION_HOST=$CLOUD_SQL_CONNECTION_HOST
+```
+
+### DBマイグレーションの実行
+
+デプロイした Cloud Run Jobs を使い、DBマイグレーションを実行します。
+
+```sh
+gcloud run jobs execute rails-command --wait
+```
+
+### アプリケーションを利用する
+
+- 新しい記事が作成できることを確認してください
+- 既存の記事の内容が表示されなくなります。編集からそのまま保存しなおすことでHTMLが生成されることを確認してください
+
+## 稼働時間チェックによる監視の追加
+
+Cloud Monitoring でエンドポイントを監視し、異常があれば通知を贈ることができます。試しましょう。
+
+## Extra Stage
+
+もしも早く終わった場合、以下の追加修正にチャレンジしてみてください。
+
+- ブログトップページの下部にある Next.js の残骸を消す
+- Terraform で Cloud Storage の パブリックバケットを作成し、そこへアップロードした画像のURLを取得、そのURLを Markdown へ埋め込んで記事に画像が表示されることを確認する
+- 記事の削除を行えるようにする
 
 ## 後片付け
 
@@ -348,3 +408,5 @@ gcloud run services delete xenn-api
 cd ~/$GITHUB_REPOSITORY_NAME/infra
 terraform destroy
 ```
+
+おつかれさまでした。
