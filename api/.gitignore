@@ -9,7 +9,10 @@ log/*
 spec/tmp
 
 tmp/*
+tmp/pids/*
 !tmp/.keep
+!/tmp/pids
+!/tmp/pids/.keep
 
 vendor/bundle
 

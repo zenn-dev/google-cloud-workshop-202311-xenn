@@ -163,5 +163,5 @@ TODO: バックエンドアプリのURLを.envへ反映する
 ```sh
 cd ~/$GITHUB_REPOSITORY_NAME/api && \
 gcloud builds submit . \
-  --tag asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api && \
+--tag asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api && \
 ```
