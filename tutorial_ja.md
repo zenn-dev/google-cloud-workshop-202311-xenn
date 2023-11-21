@@ -93,6 +93,21 @@ Ruby on Rails を Cloud Run へデプロイします。
 cd ~/$GITHUB_REPOSITORY_NAME/api && \
 gcloud builds submit . \
   --tag asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api && \
+
+gcloud run jobs deploy rails-command \
+--quiet \
+--project=$GOOGLE_CLOUD_PROJECT \
+--image=asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api \
+--service-account=$XENN_CLOUD_RUN_SERVICE_ACCOUNT \
+--set-cloudsql-instances=$CLOUD_SQL_INSTANCE_NAME \
+--cpu=1 \
+--task-timeout=60m \
+--max-retries=0 \
+--parallelism=1 \
+--set-env-vars=RAILS_ENV=production \
+--command=bundle,exec,rails \
+--args=db:migrate,db:migrate:status
+
 gcloud run deploy xenn-api \
   --image asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api \
   --service-account $XENN_CLOUD_RUN_SERVICE_ACCOUNT \
@@ -100,3 +115,16 @@ gcloud run deploy xenn-api \
   --allow-unauthenticated
   ```
 
+## チェックポイント
+
+何が起きたか画面で説明します。
+
+## DBマイグレーションの実行
+
+デプロイした Cloud Run Jobs を使い、DBマイグレーションを実行します。
+
+```sh
+gcloud run jobs execute rails-command --wait
+```
+
+DBデータSEEDの実行
