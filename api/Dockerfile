@@ -12,8 +12,8 @@ RUN apt install -y build-essential libpq-dev # slimで追加が必要なパッ�
 RUN gem install bundler
 RUN rm -rf /var/cache/apt/*
 
-COPY Gemfile /myapp/Gemfile
-COPY Gemfile.lock /myapp/Gemfile.lock
+COPY Gemfile $APP_ROOT/Gemfile
+COPY Gemfile.lock $APP_ROOT/Gemfile.lock
 RUN bundle config set --local deployment 'true'
 RUN bundle config set --local without 'development test linter'
 RUN bundle install
