@@ -412,6 +412,8 @@ Cloud Monitoring でエンドポイントを監視し、異常があれば通知
 
 以上が確認できればOKです。
 
+![](/images/tutorial_ja/2023-11-22-01-36-47.png)
+
 ## Extra Stage
 
 もしも早く終わった場合、以下の追加修正にチャレンジしてみてください。
@@ -423,6 +425,10 @@ Cloud Monitoring でエンドポイントを監視し、異常があれば通知
 ## 後片付け
 
 最後に、作成したリソースを消しましょう。
+
+### 稼働時間チェックを削除
+
+[ここから](https://console.cloud.google.com/monitoring/uptime?cloudshell=false&hl=ja)削除します。
 
 ### Cloud Run の削除
 
