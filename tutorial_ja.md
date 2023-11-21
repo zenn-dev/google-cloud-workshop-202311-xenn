@@ -194,5 +194,12 @@ EOF
 ```sh
 cd ~/$GITHUB_REPOSITORY_NAME/web && \
 gcloud builds submit . \
---tag asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api && \
+--tag asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-web && \
+
+gcloud run deploy xenn-web \
+--quiet \
+--image=asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api \
+--service-account=$XENN_CLOUD_RUN_SERVICE_ACCOUNT \
+--no-use-http2 \
+--allow-unauthenticated
 ```
