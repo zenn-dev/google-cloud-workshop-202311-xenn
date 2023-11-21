@@ -144,15 +144,32 @@ gcloud sql connect xenn-db --user=postgres --database=postgres
 # exit
 ```
 
-API リクエストが実行できることを確認します。
+APIリクエストが実行できることを確認します。
 
 ```sh
 XENN_API_ROOT_URL=$(gcloud run services describe xenn-api --region asia-northeast1 --format json | jq -r '.status.url')
 curl $XENN_API_ROOT_URL/articles
-# => 空配列のレスポンスが帰ってくればOK
 ```
 
-DBデータSEEDの実行
+- 空配列のレスポンスが帰ってくればOKです
+
+### DBデータSEEDの実行
+
+データベースにテストデータを投入します。
+
+```sh
+gcloud run jobs execute rails-command --wait \
+--args=db:seed
+```
+
+APIリクエストが実行できることを確認します。
+
+```sh
+XENN_API_ROOT_URL=$(gcloud run services describe xenn-api --region asia-northeast1 --format json | jq -r '.status.url')
+curl $XENN_API_ROOT_URL/articles
+```
+
+- テストデータが返ってくればOKです
 
 ## Webアプリケーションのデプロイ
 
