@@ -1,5 +1,5 @@
 FROM ruby:3.2-slim
-ARG APP_ROOT
+ARG APP_ROOT=/zenn-app
 
 ENV TZ Asia/Tokyo
 ENV RAILS_SERVE_STATIC_FILES true
@@ -21,7 +21,5 @@ COPY . $APP_ROOT
 
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
-EXPOSE 3000
 
 CMD ["entrypoint.sh"]

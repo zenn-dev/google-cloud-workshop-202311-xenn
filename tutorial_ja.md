@@ -39,6 +39,7 @@ export GITHUB_REPOSITORY_NAME=google-cloud-workshop-202311-xenn
 export TF_VAR_gcp_project_id=$GOOGLE_CLOUD_PROJECT
 export TF_VAR_primary_region="asia-northeast1"
 export CLOUD_SQL_CONNECTION_HOST="/cloudsql/${GOOGLE_CLOUD_PROJECT}:xenn-db"
+export CLOUD_SQL_INSTANCE_NAME=$GOOGLE_CLOUD_PROJECT:$TF_VAR_primary_region:xenn-db
 export XENN_CLOUD_RUN_SERVICE_ACCOUNT="xenn-cloud-run-runner@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com"
 ```
 
@@ -88,5 +89,14 @@ gcloud sql users create postgres \
 
 Ruby on Rails を Cloud Run へデプロイします。
 
-
+```sh
+cd ~/$GITHUB_REPOSITORY_NAME/api && \
+gcloud builds submit . \
+  --tag asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api && \
+gcloud run deploy xenn-api \
+  --image asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api \
+  --service-account $XENN_CLOUD_RUN_SERVICE_ACCOUNT \
+  --add-cloudsql-instances=$CLOUD_SQL_INSTANCE_NAME \
+  --allow-unauthenticated
+  ```
 
