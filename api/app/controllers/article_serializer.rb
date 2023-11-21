@@ -4,7 +4,6 @@ class ArticleSerializer < ApplicationSerializer
              :slug,
              :created_at
 
-  # `with_is_mine: true` が指定されたときに表示するフィールド
   attribute :body_markdown, if: proc { |_object, params|
     params[:edit].present?
   }

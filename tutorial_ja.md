@@ -75,7 +75,12 @@ terraform apply -target module.cloud-run
 - `yes` と入力しEnter
 - 警告が表示されますが問題ありません
 
-## データベース（Cloud SQL）の作成
+## 他のリソースの作成
+
+コードで管理されているすべてのリソースを作成します。以下のリソースが対象です:
+
+- Cloud SQL（PostgreSQL）
+- Artifact Registry
 
 ```sh
 cd ~/$GITHUB_REPOSITORY_NAME/infra
@@ -101,6 +106,22 @@ terraform apply
 gcloud sql users create postgres \
   --instance=xenn-db \
   --password=handson
+```
+
+### DBに接続できることを確認
+
+以下のコマンドを実行してDBに接続します。
+
+```sh
+gcloud sql connect xenn-db --user=postgres --database=postgres
+# password: handson
+# postgres => \dt
+```
+
+何かしらテーブル情報が返ってくればOKです。exitを入力してpostgresクライアントを抜けてください。
+
+```sh
+exit
 ```
 
 ## APIアプリケーションのデプロイ
@@ -146,6 +167,9 @@ gcloud run deploy xenn-api \
 
 ここまでの状態を整理します。
 
+- コマンドの意味、それぞれのコマンドで作成されるもの
+- 何に使うのか
+
 ## DBマイグレーションの実行
 
 デプロイした Cloud Run Jobs を使い、DBマイグレーションを実行します。
@@ -160,18 +184,26 @@ gcloud run jobs execute rails-command --wait
 gcloud sql connect xenn-db --user=postgres --database=postgres
 # password: handson
 # postgres => \dt
-# articles があればOK
-# exit
 ```
 
-APIリクエストが実行できることを確認します。
+articlesテーブが含まれていればOKです。articlesテーブルは、Ruby on Rails のDBマイグレーションコマンドで作成されます。Cloud Run Jobs で DBマイグレーションコマンドが実行され、Cloud SQL と繋がっていることを意味します。
+
+exitを入力してpostgresクライアントを抜けてください。
+
+```sh
+exit
+```
+
+### curl リクエスト実行
+
+デプロイした Cloud Run へ APIリクエストが実行できることを確認します。
 
 ```sh
 XENN_API_ROOT_URL=$(gcloud run services describe xenn-api --region asia-northeast1 --format json | jq -r '.status.url')
 curl $XENN_API_ROOT_URL/articles
 ```
 
-- 空配列のレスポンスが帰ってくればOKです
+空配列のレスポンスが帰ってくればOKです。
 
 ### DBデータSEEDの実行
 
@@ -182,14 +214,14 @@ gcloud run jobs execute rails-command --wait \
 --args=db:seed
 ```
 
-APIリクエストが実行できることを確認します。
+データが投入された状態でもう一度APIリクエストを実行します。
 
 ```sh
 XENN_API_ROOT_URL=$(gcloud run services describe xenn-api --region asia-northeast1 --format json | jq -r '.status.url')
 curl $XENN_API_ROOT_URL/articles
 ```
 
-- テストデータが返ってくればOKです
+空配列ではなくテストデータが返ってくればOKです。
 
 ## Webアプリケーションのデプロイ
 
@@ -226,6 +258,78 @@ gcloud run deploy xenn-web \
 
 表示されたURLへアクセスし、Xennのサイトが表示されれば成功です。何も見えない、という場合はアドレスバーに `/articles` を追加して遷移してみてください。これでアプリケーションが連携されました。お疲れ様でした。
 
+## いろいろためす
+
+Xennの機能をひととおり触ってみましょう。
+
+- 記事の一覧
+- 記事の詳細
+- 新しい記事の作成
+
+Google Cloud Console で作成されたリソースを画面からみてみましょう。
+
+- Google Cloud Console で Cloud SQL をのぞいてみる
+- Google Cloud Console で Cloud Run をのぞいてみる
+
+このようなことをやってみましょう。
+
+## アプリ修正: 編集ボタンが見えるように
+
+Next.js を修正して再デプロイする一連の流れを試してみましょう。コメントアウトされた記述を編集し、Cloud Run へ修正をデプロイします。
+
+### 修正（画面説明）
+
+- Cloud Shell で別タブを開く
+- 別タブでエディタを開く
+- `web/src/app/articles/[slug]/page.tsx` を修正する
+
+### 再デプロイ
+
+最初のデプロイ時と同じコマンドでOKです。
+
+```sh
+cd ~/$GITHUB_REPOSITORY_NAME/web && \
+gcloud builds submit . \
+--tag asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-web && \
+
+gcloud run deploy xenn-web \
+--quiet \
+--image=asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-web \
+--service-account=$XENN_CLOUD_RUN_SERVICE_ACCOUNT \
+--no-use-http2 \
+--allow-unauthenticated
+```
+
+記事の詳細画面で、編集ボタンが見えるようになり、記事の編集が実行できれば成功です。
+
+## アプリ修正: パフォーマンスUP
+
+### 修正（準備）
+
+```sh
+cd ~/$GITHUB_REPOSITORY_NAME/api
+touch db/migrate/20231122144137_add_body_html_to_article.rb
+```
+
+以下のようにDBのマイグレーションファイルを修正します。コピーしてください。
+
+```sh
+class AddBodyHtmlToArticle < ActiveRecord::Migration[7.1]
+  def change
+    add_column :articles, :body_html, :text
+  end
+end
+```
+
+### 修正（画面説明）
+
+記事詳細画面の表示速度を上げるために、Next.jsで MarkdownをHTMLへ変換しているところ、Markdown保存時にHTMLを変換してDBへ保存することにしました。
+
+- 
+
+
+
+### 再デプロイ
 
 ## 後片付け
 
