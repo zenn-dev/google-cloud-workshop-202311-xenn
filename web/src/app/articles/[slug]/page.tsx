@@ -16,12 +16,12 @@ export default async function Page({ params }: { params: { slug: string } }) {
         <a href="/articles" className="text-xl font-bold">
           Xenn
         </a>
-        <a
+        {/* <a
           href={`/articles/${article.slug}/edit`}
           className="text-md font-bold bg-purple-700 px-4 py-2 rounded-sm"
         >
           編集する
-        </a>
+        </a> */}
       </nav>
       <div className="mt-24">
         <h2 className="text-4xl font-bold py-4">{article.title}</h2>
