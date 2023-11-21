@@ -1,5 +1,4 @@
 FROM node:20.9-slim AS builder
-ENV NODE_ENV=production
 
 WORKDIR /app
 COPY package.json ./
