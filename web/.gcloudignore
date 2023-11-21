@@ -1,0 +1,4 @@
+.gcloudignore
+node_modules/
+/src
+/scripts

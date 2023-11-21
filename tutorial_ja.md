@@ -94,7 +94,7 @@ Ruby on Rails を Cloud Run へデプロイします。
 ```sh
 cd ~/$GITHUB_REPOSITORY_NAME/api && \
 gcloud builds submit . \
-  --tag asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api && \
+--tag asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api && \
 
 gcloud run jobs deploy rails-command \
 --quiet \
@@ -175,10 +175,24 @@ curl $XENN_API_ROOT_URL/articles
 
 Next.js を Cloud Run へデプロイします。
 
-TODO: バックエンドアプリのURLを.envへ反映する
+### バックエンドアプリのURLを.envへ反映
+
+以下のコマンドを実行して、.env.productionを作成します。
 
 ```sh
-cd ~/$GITHUB_REPOSITORY_NAME/api && \
+XENN_API_ROOT_URL=$(gcloud run services describe xenn-api --region asia-northeast1 --format json | jq -r '.status.url')
+cd ~/$GITHUB_REPOSITORY_NAME/web && \
+cat << EOF > .env.production
+NEXT_PUBLIC_API_ROOT=$XENN_API_ROOT_URL
+EOF
+```
+
+### デプロイ
+
+以下のコマンドを実行して、Next.jsアプリケーションをデプロイします。
+
+```sh
+cd ~/$GITHUB_REPOSITORY_NAME/web && \
 gcloud builds submit . \
 --tag asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api && \
 ```
