@@ -20,7 +20,7 @@ Google Cloud Next Tokyo ’23 は主に西棟で開催されていたのです�
 
 ### 認定者ラウンジ
 
-![](/images/google-cloud-next-report/2023-11-17-16-30-05.png)
+![](https://res.cloudinary.com/zenn/image/fetch/s--Sc0D0eYw--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_1200/https://storage.googleapis.com/zenn-user-upload/deployed-images/c9c12075ed29c9e25afc9dd5.png%3Fsha%3D3204c7812cded136d98e9e864ccf17a1fc8b0908)
 
 ハンズオン（後述）で電源が確保できずギリギリだったため認定者ラウンジに駆け込んで充電できたのは助かりました。飲み物も完備。
 
@@ -41,7 +41,7 @@ Google Cloud Next Tokyo ’23 は主に西棟で開催されていたのです�
 
 このような機能をもつアプリをつくりました。Qwiklabs で進めていきます。
 
-![](/images/google-cloud-next-report/2023-11-17-13-19-24.png)
+![](https://res.cloudinary.com/zenn/image/fetch/s--9vJOS9S4--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_1200/https://storage.googleapis.com/zenn-user-upload/deployed-images/883916a0247572b559e96092.png%3Fsha%3De328e80c715d6a6c14896d2ccd32154c10b6ab2c)
 *Google Cloud で始める生成 AI を活用したアプリケーション開発入門 - アプリ画面*
 
 ハンズオンの資料が充実しており、迷うことなく進められました。1点だけ、コマンドベースで進めるとFirebaseとCloud Storageの連携がうまくできないケースがあり、それにハマりました。アプリからみるとファイルアップロード時にCORSエラーで失敗するような見た目になるため解決に時間がかかりました（サポートの方に質問したのですが私の聞き方がわるく解決には至らず）。
@@ -77,7 +77,7 @@ Cloud Storageの実体が作成されているにもかかわらず、Firebase�
 
 セッションは画像のようにオープンスペースで行われました。
 
-![](/images/google-cloud-next-report/2023-11-17-16-28-39.png)
+![](https://res.cloudinary.com/zenn/image/fetch/s--R6MWwVMq--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_1200/https://storage.googleapis.com/zenn-user-upload/deployed-images/29aab9fe6d9d2c513a78b0ef.png%3Fsha%3D40a9a7bc47afba42c0d46df7b31f62e161bdbd63)
 
 
 最初、これ喋ってる内容聞こえるんかな？と思いましたが視聴者全員にレシーバーが配布され、声はレシーバーにより聞きます。オープンスペースでお祭り感をだしつつ、音声は集中できるようにする上手な運用だなと思いました。
