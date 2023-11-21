@@ -279,8 +279,7 @@ Next.js を修正して再デプロイする一連の流れを試してみまし
 
 ### 修正（画面説明）
 
-- Cloud Shell で別タブを開く
-- 別タブでエディタを開く
+- Cloud Shell でエディタを開く
 - `web/src/app/articles/[slug]/page.tsx` を修正する
 
 ### 再デプロイ
@@ -382,6 +381,36 @@ gcloud run jobs execute rails-command --wait
 ## 稼働時間チェックによる監視の追加
 
 Cloud Monitoring でエンドポイントを監視し、異常があれば通知を贈ることができます。試しましょう。
+
+1. [Cloud Monitoringの稼働時間チェック](https://console.cloud.google.com/monitoring/uptime?cloudshell=false&hl=ja)を開きます
+2. 稼働時間チェックを作成します
+  - protocol: HTTPS
+  - リソースの種類: URL
+  - Hostname: Cloud Run（Next.js） のドメインを入力
+  - Path: articles
+3. レスポンスの検証はそのままでOK
+4. アラートと通知
+  - 名前だけ自分のものとわかるようにしてください。例: `和田のテストアラート通知`
+  - Duration: 1 minute
+  - 通知チャンネル: 新しく作成します。Eメールでご自身が受け取れるアドレスをご指定ください。ちょっと遠慮したい場合は別途お知らせします。
+5. 確認
+  - 名前は `Xennトップページの稼働チェック` などとしてください
+  - TEST を実行してパスすることを確認します（失敗した場合はもう一度試してください）
+6. CREATE
+
+### Cloud SQL を停止する
+
+この状態でデータベースを停止するとどうなるかみてみましょう。Google Cloud Console で Cloud SQL のページへ行きます。
+
+**DBを停止します。業務や個人でGoogle Cloudを利用している方は、対象のプロジェクトが合っているか今一度確認してください。**
+
+`■停止` を押して停止します。
+
+- DBへクエリを送るRails APIでエラー
+- Rails API を使う Next.js でエラー
+- 稼働時間チェックにひっかかり、メールが送信される
+
+以上が確認できればOKです。
 
 ## Extra Stage
 
