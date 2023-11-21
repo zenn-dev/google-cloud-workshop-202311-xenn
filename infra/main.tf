@@ -28,3 +28,11 @@ module "cloud-run" {
   source         = "./modules/cloud-run"
   gcp_project_id = var.gcp_project_id
 }
+
+
+## Artifact Registry ##
+module "artifact-registry" {
+  source                     = "./modules/artifact-registry"
+  gcp_project_id             = var.gcp_project_id
+  artifact_registry_location = var.primary_region
+}
