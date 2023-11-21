@@ -99,6 +99,7 @@ test:
 production:
   <<: *default
   database: postgres
-  username: <%= Rails.application.credentials.dig(:db, :username) %>
-  password: <%= Rails.application.credentials.dig(:db, :password) %>
-  host: <%= Rails.application.credentials.dig(:db, :host) %>
+  username: postgres
+  password: handson
+  host: <%= ENV["CLOUD_SQL_CONNECTION_HOST"] %>
+  # host: <%= Rails.application.credentials.dig(:db, :host) %>
