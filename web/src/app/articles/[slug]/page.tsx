@@ -11,35 +11,31 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const { article } = await getArticle({ slug: params.slug });
   const html = markdownToHtml(article.bodyMarkdown);
   return (
-    <main className="flex min-h-screen flex-col justify-between gap-64 pl-64 pr-64">
-      <div className="flex flex-col gap-32">
-        <nav className="flex items-center justify-between pt-4">
-          <a href="/articles" className="text-xl font-bold">
-            Xenn
-          </a>
-          <a
-            href={`/articles/${article.slug}/edit`}
-            className="text-md font-bold bg-purple-700 px-4 py-2 rounded-sm"
-          >
-            編集する
-          </a>
-        </nav>
-        <div className="flex flex-col gap-16 text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-1 lg:text-left pb-64">
-          <div>
-            <h2 className="text-4xl font-bold">{article.title}</h2>
-            <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-              {formatDate(article.createdAt, { format: "YYYY年MM月DD日" })}
-              に作成
-            </p>
-          </div>
-          <article>
-            <div
-              className="prose prose-lg znc"
-              dangerouslySetInnerHTML={{ __html: html }}
-            />
-          </article>
-        </div>
+    <main>
+      <nav className="flex items-end justify-between h-[48px]">
+        <a href="/articles" className="text-xl font-bold">
+          Xenn
+        </a>
+        <a
+          href={`/articles/${article.slug}/edit`}
+          className="text-md font-bold bg-purple-700 px-4 py-2 rounded-sm"
+        >
+          編集する
+        </a>
+      </nav>
+      <div className="mt-24">
+        <h2 className="text-4xl font-bold py-4">{article.title}</h2>
+        <p className={`text-lg text-gray-400`}>
+          {formatDate(article.createdAt, { format: "YYYY年MM月DD日" })}
+          に作成
+        </p>
       </div>
+      <article className="mt-16 pb-64">
+        <div
+          className="znc bg-gray-700 p-8"
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      </article>
     </main>
   );
 }

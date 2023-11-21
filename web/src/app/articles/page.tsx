@@ -8,21 +8,19 @@ export const revalidate = 0;
 export default async function Page() {
   const data = await getArticles();
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between px-24 py-8">
-      <div className="container mx-auto flex flex-col gap-24 lg:max-w-5xl lg:w-full">
-        <nav className="flex items-center justify-between">
-          <a href="/articles" className="text-xl font-bold">
-            Xenn
-          </a>
-          <a
-            href="/articles/new"
-            className="text-md font-bold bg-purple-700 px-4 py-2 rounded-sm"
-          >
-            新規作成
-          </a>
-        </nav>
-      </div>
-      <div className="flex flex-col gap-16 text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-1 lg:text-left mt-24">
+    <main>
+      <nav className="flex items-end justify-between h-[48px]">
+        <a href="/articles" className="text-xl font-bold">
+          Xenn
+        </a>
+        <a
+          href="/articles/new"
+          className="text-md font-bold bg-purple-700 px-4 py-2 rounded-sm"
+        >
+          新規作成
+        </a>
+      </nav>
+      <div className="flex flex-col gap-16 mt-24">
         {data.articles.map((article) => (
           <article key={article.id}>
             <a href={`/articles/${article.slug}`} rel="noopener noreferrer">

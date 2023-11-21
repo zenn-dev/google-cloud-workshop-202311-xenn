@@ -16,7 +16,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <div className="min-h-screen px-96 py-4">
+        {children}
+        </div>
+        </body>
     </html>
   )
 }

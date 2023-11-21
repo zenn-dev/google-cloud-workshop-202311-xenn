@@ -12,15 +12,13 @@ export const revalidate = 0;
 export default async function Page({ params }: { params: { slug: string } }) {
   const { article } = await getArticleEdit({ slug: params.slug });
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between px-24 py-8">
-      <div className="container mx-auto px-64 flex flex-col gap-24">
-        <nav className="">
-          <a href="/articles" className="text-xl font-bold">
-            Xenn
-          </a>
-        </nav>
-        <Editor article={article} slug={params.slug} />
-      </div>
+    <main className="flex flex-col gap-24">
+      <nav className="flex items-end justify-between h-[48px]">
+        <a href="/articles" className="text-xl font-bold">
+          Xenn
+        </a>
+      </nav>
+      <Editor article={article} slug={params.slug} />
     </main>
   );
 }
