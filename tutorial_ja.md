@@ -198,7 +198,7 @@ gcloud builds submit . \
 
 gcloud run deploy xenn-web \
 --quiet \
---image=asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api \
+--image=asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-web \
 --service-account=$XENN_CLOUD_RUN_SERVICE_ACCOUNT \
 --no-use-http2 \
 --allow-unauthenticated
