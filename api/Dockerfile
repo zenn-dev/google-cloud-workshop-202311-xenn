@@ -1,5 +1,5 @@
 FROM ruby:3.2-slim
-ARG APP_ROOT=/zenn-app
+ARG APP_ROOT=/xenn-app
 
 ENV TZ Asia/Tokyo
 ENV RAILS_SERVE_STATIC_FILES true
