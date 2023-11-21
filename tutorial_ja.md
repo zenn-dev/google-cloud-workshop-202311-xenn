@@ -35,11 +35,13 @@ gcloud config set run/platform managed
 ### 環境変数の設定
 
 ```sh
+export RAILS_MASTER_KEY=e1bcaa95519afaa1c20c33e25a846f4a
 export GITHUB_REPOSITORY_NAME=google-cloud-workshop-202311-xenn
 export TF_VAR_gcp_project_id=$GOOGLE_CLOUD_PROJECT
 export TF_VAR_primary_region="asia-northeast1"
 export CLOUD_SQL_CONNECTION_HOST="/cloudsql/${GOOGLE_CLOUD_PROJECT}:xenn-db"
 export CLOUD_SQL_INSTANCE_NAME=$GOOGLE_CLOUD_PROJECT:$TF_VAR_primary_region:xenn-db
+export XENN_CLOUD_RUN_SERVICE_ACCOUNT="xenn-cloud-run-runner@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com"
 export XENN_CLOUD_RUN_SERVICE_ACCOUNT="xenn-cloud-run-runner@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com"
 ```
 
@@ -105,6 +107,7 @@ gcloud run jobs deploy rails-command \
 --max-retries=0 \
 --parallelism=1 \
 --set-env-vars=RAILS_ENV=production \
+--set-env-vars=RAILS_MASTER_KEY=$RAILS_MASTER_KEY \
 --command=bundle,exec,rails \
 --args=db:migrate,db:migrate:status
 
