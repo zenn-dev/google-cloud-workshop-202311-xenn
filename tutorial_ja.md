@@ -131,4 +131,14 @@ gcloud run deploy xenn-api \
 gcloud run jobs execute rails-command --wait
 ```
 
+テーブルが作成されたことを確認してみます。
+
+```sh
+gcloud sql connect xenn-db --user=postgres --database=postgres
+# password: handson
+# postgres => \dt
+# articles があればOK
+# exit
+```
+
 DBデータSEEDの実行
