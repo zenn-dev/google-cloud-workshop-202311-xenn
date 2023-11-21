@@ -2,7 +2,7 @@ variable "primary_region" {
   type = string
 }
 
-resource "google_sql_database_instance" "zenn-db" {
+resource "google_sql_database_instance" "xenn-db" {
   name                = "xenn-db"
   database_version    = "POSTGRES_14"
   region              = var.primary_region

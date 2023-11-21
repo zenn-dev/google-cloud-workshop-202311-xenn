@@ -3,7 +3,12 @@
 
 ## はじめに
 
-説明
+このチュートリアルではブログ投稿サンプルサイト、「Xenn」をデプロイします。最低限の操作ができるAPIとWebサイトをデプロイし、触りながら機能を加えていきます。
+
+- 前半: アプリケーションを Google Cloud へデプロイする
+- 後半: エディタで編集しながら機能を変更してみる
+
+大まかに上記のような構成になっています。それでは始めましょう。
 
 ## セットアップ（API）
 
@@ -34,6 +39,8 @@ gcloud config set run/platform managed
 
 ### 環境変数の設定
 
+TerraformやCloud Runをデプロイする際に必要となる環境変数を設定します。
+
 ```sh
 export RAILS_MASTER_KEY=e1bcaa95519afaa1c20c33e25a846f4a
 export GITHUB_REPOSITORY_NAME=google-cloud-workshop-202311-xenn
@@ -47,6 +54,8 @@ export XENN_CLOUD_RUN_SERVICE_ACCOUNT="xenn-cloud-run-runner@${GOOGLE_CLOUD_PROJ
 
 ## Terraform の利用開始
 
+まずは Google Cloud のリソースを Terraform でデプロイしてみましょう。
+
 ### 初期化
 
 ```sh
@@ -59,6 +68,7 @@ terraform init
 まずはこちらのコマンドでサービスアカウントを作成しつつ、Terraformが実行できることを確認します。
 
 ```sh
+cd ~/$GITHUB_REPOSITORY_NAME/infra
 terraform apply -target module.cloud-run
 ```
 
@@ -68,6 +78,7 @@ terraform apply -target module.cloud-run
 ## データベース（Cloud SQL）の作成
 
 ```sh
+cd ~/$GITHUB_REPOSITORY_NAME/infra
 terraform apply
 ```
 
@@ -78,8 +89,13 @@ terraform apply
 
 ここまでの状態を整理します。
 
+- Terraform とは
+- Terraformを使って作成したもの
+- どこまでTerraformで管理するか：アプリケーションのライフサイクルを考える
 
 ## データベースユーザーの作成
+
+データベースが作成されたら、ユーザーを作成します（デフォルトのpostgresデータベースをそのまま利用します）。
 
 ```bash
 gcloud sql users create postgres \
@@ -90,6 +106,10 @@ gcloud sql users create postgres \
 ## APIアプリケーションのデプロイ
 
 Ruby on Rails を Cloud Run へデプロイします。
+
+1. Cloud Build コマンドを使って Dockerfile からイメージ作成、Artifact Registry へプッシュ
+2. 1でプッシュしたイメージを使って Cloud Run Jobs をデプロイ
+3. 1でプッシュしたイメージを使って Cloud Run サービスをデプロイ
 
 ```sh
 cd ~/$GITHUB_REPOSITORY_NAME/api && \
@@ -110,7 +130,7 @@ gcloud run jobs deploy rails-command \
 --set-env-vars=RAILS_MASTER_KEY=$RAILS_MASTER_KEY \
 --set-env-vars=CLOUD_SQL_CONNECTION_HOST=$CLOUD_SQL_CONNECTION_HOST \
 --command=bundle,exec,rails \
---args=db:migrate,db:migrate:status
+--args=db:migrate,db:migrate:status && \
 
 gcloud run deploy xenn-api \
 --image=asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-api \
@@ -124,7 +144,7 @@ gcloud run deploy xenn-api \
 
 ## チェックポイント
 
-何が起きたか画面で説明します。
+ここまでの状態を整理します。
 
 ## DBマイグレーションの実行
 
@@ -202,4 +222,25 @@ gcloud run deploy xenn-web \
 --service-account=$XENN_CLOUD_RUN_SERVICE_ACCOUNT \
 --no-use-http2 \
 --allow-unauthenticated
+```
+
+表示されたURLへアクセスし、Xennのサイトが表示されれば成功です。何も見えない、という場合はアドレスバーに `/articles` を追加して遷移してみてください。これでアプリケーションが連携されました。お疲れ様でした。
+
+
+## 後片付け
+
+最後に、作成したリソースを消しましょう。
+
+### Cloud Run の削除
+
+```sh
+gcloud run services delete xenn-web && \
+gcloud run services delete xenn-api
+```
+
+### Terraformで作成したリソースの削除
+
+```sh
+cd ~/$GITHUB_REPOSITORY_NAME/infra
+terraform destroy
 ```
