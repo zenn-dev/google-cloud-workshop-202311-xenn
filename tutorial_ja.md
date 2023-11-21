@@ -412,7 +412,7 @@ Cloud Monitoring でエンドポイントを監視し、異常があれば通知
 
 以上が確認できればOKです。
 
-![](/images/tutorial_ja/2023-11-22-01-36-47.png)
+![](images/tutorial_ja/2023-11-22-01-36-47.png)
 
 ## Extra Stage
 
