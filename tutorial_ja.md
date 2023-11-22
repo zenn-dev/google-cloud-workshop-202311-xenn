@@ -376,6 +376,25 @@ gcloud run deploy xenn-api \
 gcloud run jobs execute rails-command --wait
 ```
 
+### Webアプリケーションの再デプロイ
+
+### デプロイ
+
+以下のコマンドを実行して、Next.jsアプリケーションをデプロイします。
+
+```sh
+cd ~/$GITHUB_REPOSITORY_NAME/web && \
+gcloud builds submit . \
+--tag asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-web && \
+
+gcloud run deploy xenn-web \
+--quiet \
+--image=asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/xenn-repo/xenn-web \
+--service-account=$XENN_CLOUD_RUN_SERVICE_ACCOUNT \
+--no-use-http2 \
+--allow-unauthenticated
+```
+
 ### **アプリケーションを利用する**
 
 - 新しい記事が作成できることを確認してください
