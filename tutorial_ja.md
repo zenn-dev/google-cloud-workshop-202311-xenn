@@ -22,7 +22,8 @@ gcloud services enable \
   cloudbuild.googleapis.com \
   pubsub.googleapis.com \
   sqladmin.googleapis.com \
-  resourcesettings.googleapis.com
+  resourcesettings.googleapis.com \
+  iam.googleapis.com
 ```
 
 ## セットアップ（設定）
