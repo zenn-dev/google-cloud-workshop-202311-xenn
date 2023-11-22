@@ -187,7 +187,7 @@ gcloud sql connect xenn-db --user=postgres --database=postgres
 # postgres => \dt
 ```
 
-articlesテーブが含まれていればOKです。articlesテーブルは、Ruby on Rails のDBマイグレーションコマンドで作成されます。Cloud Run Jobs で DBマイグレーションコマンドが実行され、Cloud SQL と繋がっていることを意味します。
+articlesテーブルが含まれていればOKです。articlesテーブルは、Ruby on Rails のDBマイグレーションコマンドで作成されます。Cloud Run Jobs で DBマイグレーションコマンドが実行され、Cloud SQL と繋がっていることを意味します。
 
 exitを入力してpostgresクライアントを抜けてください。
 
