@@ -28,7 +28,7 @@ gcloud services enable \
 
 Cloud Shell でコマンドを実行するときの設定です。セッションごとにリセットされるため、Cloud Shellを再起動した場合などは、こちらのコマンドを再度実行してください。
 
-### gcloud コマンドの初期化
+### **gcloud コマンドの初期化**
 
 ```sh
 gcloud config set run/region asia-northeast1
@@ -37,7 +37,7 @@ gcloud config set run/platform managed
 
 ここではリージョンを東京、プラットフォームをフルマネージドに設定しました。この設定を行うことで、gcloud コマンドから Cloud Run を操作するときに毎回指定する必要がなくなります。
 
-### 環境変数の設定
+### **環境変数の設定**
 
 TerraformやCloud Runをデプロイする際に必要となる環境変数を設定します。
 
@@ -56,16 +56,16 @@ export XENN_CLOUD_RUN_SERVICE_ACCOUNT="xenn-cloud-run-runner@${GOOGLE_CLOUD_PROJ
 
 まずは Google Cloud のリソースを Terraform でデプロイしてみましょう。
 
-### 初期化
+### **初期化**
 
 ```sh
 cd ~/$GITHUB_REPOSITORY_NAME/infra
 terraform init
 ```
 
-### Cloud Run 用 サービスアカウントの設定
+### **Cloud Run 用 サービスアカウントの設定**
 
-まずはこちらのコマンドでサービスアカウントを作成しつつ、Terraformが実行できることを確認します。
+こちらのコマンドでサービスアカウントを作成しつつ、Terraformが実行できることを確認します。
 
 ```sh
 cd ~/$GITHUB_REPOSITORY_NAME/infra
@@ -108,7 +108,7 @@ gcloud sql users create postgres \
   --password=handson
 ```
 
-### DBに接続できることを確認
+### **DBに接続できることを確認**
 
 以下のコマンドを実行してDBに接続します。
 
@@ -194,7 +194,7 @@ exitを入力してpostgresクライアントを抜けてください。
 exit
 ```
 
-### curl リクエスト実行
+### **curl リクエスト実行**
 
 デプロイした Cloud Run へ APIリクエストが実行できることを確認します。
 
@@ -205,7 +205,7 @@ curl $XENN_API_ROOT_URL/articles
 
 空配列のレスポンスが帰ってくればOKです。
 
-### DBデータSEEDの実行
+### **DBデータSEEDの実行**
 
 データベースにテストデータを投入します。
 
@@ -227,7 +227,7 @@ curl $XENN_API_ROOT_URL/articles
 
 Next.js を Cloud Run へデプロイします。
 
-### バックエンドアプリのURLを.envへ反映
+### **バックエンドアプリのURLを.envへ反映**
 
 以下のコマンドを実行して、.env.productionを作成します。
 
@@ -239,7 +239,7 @@ NEXT_PUBLIC_API_ROOT=$XENN_API_ROOT_URL
 EOF
 ```
 
-### デプロイ
+### **デプロイ**
 
 以下のコマンドを実行して、Next.jsアプリケーションをデプロイします。
 
@@ -277,12 +277,12 @@ Google Cloud Console で作成されたリソースを画面からみてみま�
 
 Next.js を修正して再デプロイする一連の流れを試してみましょう。コメントアウトされた記述を編集し、Cloud Run へ修正をデプロイします。
 
-### 修正（画面説明）
+### **修正（画面説明）**
 
 - Cloud Shell でエディタを開く
 - `web/src/app/articles/[slug]/page.tsx` を修正する
 
-### 再デプロイ
+### **再デプロイ**
 
 最初のデプロイ時と同じコマンドでOKです。
 
@@ -303,7 +303,7 @@ gcloud run deploy xenn-web \
 
 ## アプリ修正: パフォーマンスUP
 
-### 修正（準備）
+### **修正（準備）**
 
 ```sh
 cd ~/$GITHUB_REPOSITORY_NAME/api
@@ -320,7 +320,7 @@ class AddBodyHtmlToArticle < ActiveRecord::Migration[7.1]
 end
 ```
 
-### 修正（画面説明）
+### **修正（画面説明）**
 
 記事詳細画面の表示速度を上げるために、Next.jsで MarkdownをHTMLへ変換しているところ、Markdown保存時にHTMLを変換してDBへ保存することにしました。画面の説明に従い、以下を修正してください。
 
@@ -332,7 +332,7 @@ end
 
 ### 再デプロイ
 
-前回デプロイ時と同じコマンドでデプロイします。
+**前回デプロイ時と同じコマンドでデプロイします。**
 
 ```sh
 cd ~/$GITHUB_REPOSITORY_NAME/api && \
@@ -365,7 +365,7 @@ gcloud run deploy xenn-api \
 --set-env-vars=CLOUD_SQL_CONNECTION_HOST=$CLOUD_SQL_CONNECTION_HOST
 ```
 
-### DBマイグレーションの実行
+### **DBマイグレーションの実行**
 
 デプロイした Cloud Run Jobs を使い、DBマイグレーションを実行します。
 
@@ -373,7 +373,7 @@ gcloud run deploy xenn-api \
 gcloud run jobs execute rails-command --wait
 ```
 
-### アプリケーションを利用する
+### **アプリケーションを利用する**
 
 - 新しい記事が作成できることを確認してください
 - 既存の記事の内容が表示されなくなります。編集からそのまま保存しなおすことでHTMLが生成されることを確認してください
@@ -398,7 +398,7 @@ Cloud Monitoring でエンドポイントを監視し、異常があれば通知
   - TEST を実行してパスすることを確認します（失敗した場合はもう一度試してください）
 6. CREATE
 
-### Cloud SQL を停止する
+### **Cloud SQL をわざと停止する**
 
 この状態でデータベースを停止するとどうなるかみてみましょう。Google Cloud Console で Cloud SQL のページへ行きます。
 
@@ -422,22 +422,42 @@ Cloud Monitoring でエンドポイントを監視し、異常があれば通知
 - Terraform で Cloud Storage の パブリックバケットを作成し、そこへアップロードした画像のURLを取得、そのURLを Markdown へ埋め込んで記事に画像が表示されることを確認する
 - 記事の削除を行えるようにする
 
+### **さらなる高みを目指す方へ１**
+**ローカルマシンで `git clone` を行う**
+
+- api/ `docker compose run api bundle install`
+- api/ `docker compose up`
+- api/ `docker compose exec api rails db:migrate`
+- api/ `docker compose exec api rails db:seed`
+- web/ `yarn install`, `yarn dev`
+- `http://localhost:3000` で表示されれば成功です
+
+
+### **さらなる高みを目指す方へ２**
+
+GitHub アカウントが必要になります。GitHub にコードをプッシュすると、自動でデプロイできるように構成できます。Zennはそのような構成です。調べてチャレンジしてみましょう。
+
+- リポジトリを fork する
+- cloudbuild.yml を作成し、ビルド・デプロイの処理をひとまとめにする
+- GitHub リポジトリ と Cloud Build を連携する
+- main ブランチに push すると 自動で Ruby on Rails が Cloud Run へデプロイされるようにする
+
 ## 後片付け
 
 最後に、作成したリソースを消しましょう。
 
-### 稼働時間チェックを削除
+### **稼働時間チェックを削除**
 
 [ここから](https://console.cloud.google.com/monitoring/uptime?cloudshell=false&hl=ja)削除します。
 
-### Cloud Run の削除
+### **Cloud Run の削除**
 
 ```sh
 gcloud run services delete xenn-web && \
 gcloud run services delete xenn-api
 ```
 
-### Terraformで作成したリソースの削除
+### **Terraformで作成したリソースの削除**
 
 ```sh
 cd ~/$GITHUB_REPOSITORY_NAME/infra
