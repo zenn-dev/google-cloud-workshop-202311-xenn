@@ -8,6 +8,7 @@ export type ArticleMeta = {
 };
 
 export type Article = ArticleMeta & {
+  bodyMarkdown: string;
   bodyHtml: string;
 };
 export type ArticleEdit = Article;
