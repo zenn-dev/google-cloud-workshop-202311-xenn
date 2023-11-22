@@ -97,6 +97,7 @@ terraform apply
 - Terraform とは
 - Terraformを使って作成したもの
 - どこまでTerraformで管理するか：アプリケーションのライフサイクルを考える
+- infra構成、Terraformの考え方、modules、環境変数
 
 ## データベースユーザーの作成
 
