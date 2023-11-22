@@ -21,7 +21,8 @@ gcloud services enable \
   artifactregistry.googleapis.com \
   cloudbuild.googleapis.com \
   pubsub.googleapis.com \
-  sqladmin.googleapis.com
+  sqladmin.googleapis.com \
+  resourcesettings.googleapis.com
 ```
 
 ## セットアップ（設定）
