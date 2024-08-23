@@ -20,8 +20,10 @@ gcloud services enable \
   run.googleapis.com \
   artifactregistry.googleapis.com \
   cloudbuild.googleapis.com \
+  cloudresourcemanager.googleapis.com \
   pubsub.googleapis.com \
   sqladmin.googleapis.com \
+  sql-component.googleapis.com \
   resourcesettings.googleapis.com \
   iam.googleapis.com
 ```
