@@ -20,8 +20,10 @@ gcloud services enable \
   run.googleapis.com \
   artifactregistry.googleapis.com \
   cloudbuild.googleapis.com \
+  cloudresourcemanager.googleapis.com \
   pubsub.googleapis.com \
   sqladmin.googleapis.com \
+  sql-component.googleapis.com \
   resourcesettings.googleapis.com \
   iam.googleapis.com
 ```
@@ -50,7 +52,6 @@ export TF_VAR_gcp_project_id=$GOOGLE_CLOUD_PROJECT
 export TF_VAR_primary_region="asia-northeast1"
 export CLOUD_SQL_CONNECTION_HOST="/cloudsql/${GOOGLE_CLOUD_PROJECT}:$TF_VAR_primary_region:xenn-db"
 export CLOUD_SQL_INSTANCE_NAME=$GOOGLE_CLOUD_PROJECT:$TF_VAR_primary_region:xenn-db
-export XENN_CLOUD_RUN_SERVICE_ACCOUNT="xenn-cloud-run-runner@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com"
 export XENN_CLOUD_RUN_SERVICE_ACCOUNT="xenn-cloud-run-runner@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com"
 ```
 
