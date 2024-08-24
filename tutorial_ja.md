@@ -313,7 +313,7 @@ gcloud run deploy xenn-web \
 
 ```sh
 cd ~/$GITHUB_REPOSITORY_NAME/api
-touch db/migrate/20231122144137_add_body_html_to_article.rb
+touch db/migrate/20240824144137_add_body_html_to_article.rb
 ```
 
 以下のようにDBのマイグレーションファイルを修正します。コピーしてください。
