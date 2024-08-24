@@ -6,7 +6,7 @@ class ArticlesController < ApplicationController
 
   def show
     article = Article.find_by(slug: params[:slug])
-    render json: { article: ArticleSerializer.new(article, params: { edit: true }).to_h }
+    render json: { article: ArticleSerializer.new(article, params: { detail: true }).to_h }
   end
 
   def edit
