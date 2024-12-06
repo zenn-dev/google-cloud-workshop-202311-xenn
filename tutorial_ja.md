@@ -332,7 +332,7 @@ end
 
 - Articleモデルを修正
   - Rails で Markdown を保存するときにHTMLへ変換して保存するよう修正
-  - 外部のMarkdown変換ロジック（Cloud Functions）を使う
+  - 外部のMarkdown変換ロジック（Cloud Run 関数）を使う
 - HTMLを返すようにシリアライザ・コントローラーを修正
 - Next.js でHTMLを使い、変換ロジックは破棄するように修正
 
