@@ -388,7 +388,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <article className="mt-16 pb-64">
         <div
           className="znc bg-gray-700 p-8"
-          dangerouslySetInnerHTML={{ __html: article.bodyHtml }} // article.bodyHtmlを使うように修正
+          dangerouslySetInnerHTML={{ __html: article.bodyHtml }}
         />
       </article>
     </main>
