@@ -124,10 +124,11 @@ gcloud sql connect xenn-db --user=postgres --database=postgres
 # postgres => \dt
 ```
 
-何かしらテーブル情報が返ってくればOKです。exitを入力してpostgresクライアントを抜けてください。
+`\dt` で `Did not find any relations.` と返ってくればOKです。まだテーブルを作成していないのでこのようなメッセージになります。
+\qを入力してpostgresクライアントを抜けてください。
 
 ```sh
-exit
+\q
 ```
 
 ## APIアプリケーションのデプロイ
@@ -194,10 +195,10 @@ gcloud sql connect xenn-db --user=postgres --database=postgres
 
 articlesテーブルが含まれていればOKです。articlesテーブルは、Ruby on Rails のDBマイグレーションコマンドで作成されます。Cloud Run Jobs で DBマイグレーションコマンドが実行され、Cloud SQL と繋がっていることを意味します。
 
-exitを入力してpostgresクライアントを抜けてください。
+\qを入力してpostgresクライアントを抜けてください。
 
 ```sh
-exit
+\q
 ```
 
 ### **curl リクエスト実行**
@@ -262,7 +263,17 @@ gcloud run deploy xenn-web \
 --allow-unauthenticated
 ```
 
-表示されたURLへアクセスし、Xennのサイトが表示されれば成功です。何も見えない、という場合はアドレスバーに `/articles` を追加して遷移してみてください。これでアプリケーションが連携されました。お疲れ様でした。
+デプロイが終わったら、**表示されたURLではなく**、以下のコマンドで改めてURLを出力します。
+
+```sh
+gcloud run \
+services describe xenn-web \
+--region asia-northeast1 \
+--format json | jq -r \
+'.status.url'
+```
+
+このコマンドで出力されたURLへアクセスし、Xennのサイトが表示されれば成功です。何も見えない、という場合はアドレスバーに `/articles` を追加して遷移してみてください。これでアプリケーションが連携されました。お疲れ様でした。
 
 ## いろいろためす
 
@@ -305,7 +316,17 @@ gcloud run deploy xenn-web \
 --allow-unauthenticated
 ```
 
-記事の詳細画面で、編集ボタンが見えるようになり、記事の編集が実行できれば成功です。
+URLを取得します。
+
+```sh
+gcloud run \
+services describe xenn-web \
+--region asia-northeast1 \
+--format json | jq -r \
+'.status.url'
+```
+
+記事の詳細画面で、編集ボタンが見えるようになり、記事の編集が実行できれば成功です。更新が反映されない場合はリロードしてみてください。
 
 ## アプリ修正: パフォーマンスUP
 
@@ -420,7 +441,17 @@ gcloud run jobs execute rails-command --wait
 
 ### **Webアプリケーションの再デプロイ**
 
-以下のコマンドを実行して、Next.jsアプリケーションをデプロイします。
+まず、改めて `.env.production` を作成します。
+
+```sh
+XENN_API_ROOT_URL=$(gcloud run services describe xenn-api --region asia-northeast1 --format json | jq -r '.status.url')
+cd ~/$GITHUB_REPOSITORY_NAME/web && \
+cat << EOF > .env.production
+NEXT_PUBLIC_API_ROOT=$XENN_API_ROOT_URL
+EOF
+```
+
+つぎに以下のコマンドを実行して、Next.jsアプリケーションをデプロイします。
 
 ```sh
 cd ~/$GITHUB_REPOSITORY_NAME/web && \
@@ -433,6 +464,16 @@ gcloud run deploy xenn-web \
 --service-account=$XENN_CLOUD_RUN_SERVICE_ACCOUNT \
 --no-use-http2 \
 --allow-unauthenticated
+```
+
+URLを取得します。
+
+```sh
+gcloud run \
+services describe xenn-web \
+--region asia-northeast1 \
+--format json | jq -r \
+'.status.url'
 ```
 
 ### **アプリケーションを利用する**
