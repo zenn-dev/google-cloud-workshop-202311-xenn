@@ -9,6 +9,7 @@ export const revalidate = 0;
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const { article } = await getArticle({ slug: params.slug });
+  const html = markdownToHtml(article.bodyMarkdown);
   return (
     <main>
       <nav className="flex items-end justify-between h-[48px]">
@@ -32,7 +33,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <article className="mt-16 pb-64">
         <div
           className="znc bg-gray-700 p-8"
-          dangerouslySetInnerHTML={{ __html: article.bodyHtml }}
+          dangerouslySetInnerHTML={{ __html: html }}
         />
       </article>
     </main>
