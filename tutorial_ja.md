@@ -286,7 +286,7 @@ Next.js を修正して再デプロイする一連の流れを試してみまし
 ### **修正（画面説明）**
 
 - Cloud Shell でエディタを開く
-- `web/src/app/articles/[slug]/page.tsx` で編集ボタンがみえるように、コメントアウトを戻す
+- `google-cloud-workshop-202311-xenn/web/src/app/articles/[slug]/page.tsx` で編集ボタンがみえるように、コメントアウトを戻す
 
 ### **再デプロイ**
 
@@ -327,7 +327,7 @@ git switch feat-loading-performance
 ### **修正**
 
 - Cloud Shell でエディタを開く
-- `web/src/app/articles/[slug]/page.tsx` を修正する
+- `google-cloud-workshop-202311-xenn/web/src/app/articles/[slug]/page.tsx` を修正する
 - `const html = markdownToHtml(article.bodyMarkdown);` を削除する
 - `dangerouslySetInnerHTML={{ __html: html }}` を、`dangerouslySetInnerHTML={{ __html: article.html }}` に修正する
 
