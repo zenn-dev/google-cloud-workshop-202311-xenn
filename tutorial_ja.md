@@ -485,22 +485,35 @@ git switch advanced
 
 
 
-## Geminiによるレポート出力体験
+## Geminiによるレビュー体験
 
-Geminiにレポートを作成してもらい、それをブログへ投稿する一連の流れを試してみましょう。
+GeminiはWeb API経由でも使えます。Cloud Run 関数に実装されたレビュー機能を使って、あなたの構築したブログ記事をレビューしてもらいましょう。
 
-以下へアクセス:
-https://gemini.google.com/app
+###  **プロンプトページのURLを入れる**
 
-以下のプロンプトを入力してください
+次のページを編集しましょう。
 
-```text
-あなたはZennに日頃技術ブログを投稿しているデベロッパーです。
-Zennに投稿するため、Google Cloud Next Tokyo '24 の基調講演のレポートブログを作成してください。
-コンテンツはMarkdown形式で作成し、コード行として出力してください。
+```sh
+XENN_WEB_ROOT_URL=$(gcloud run services describe xenn-web --region asia-northeast1 --format json | jq -r '.status.url')
+echo "${XENN_WEB_ROOT_URL}/articles/prompt"
 ```
 
-出力されたMarkdownテキストを新規投稿してください。少ないステップ数で記事を作成できる流れを体験できました。
+### **Geminiにレビューしてもらう**
+
+あなたが用意したプロンプトを使って、GeminiにGoogle Cloud Next Tokyoの記事をレビューしてもらいましょう。
+
+```sh
+curl -X POST https://geminireviewerhttp-222628783481.asia-northeast1.run.app \
+-H "Content-Type: application/json" \
+-d "{ \"promptUrl\": \"${XENN_WEB_ROOT_URL}/articles/prompt\", \"contentUrl\": \"${XENN_WEB_ROOT_URL}/articles/google-cloud-next-tokyo-2023-report\"}" | jq -r '.text'
+```
+
+レビュー結果が返ってくれば成功です。
+
+### **Cloud Run関数を呼びました**
+
+Vertex AI API 経由で `gemini-1.5-pro-001` モデルを使い、レビューしてもらうCloud Run関数を実装しました。これを呼んでいます。手軽に生成AIが使えるようになり、このたぐいのレポーティングは雑多に任せることができるようになりました。Zennでも、スパムの判定と報告に Gemini を活用しています。
+
 
 ## 稼働時間チェックによる監視の追加
 
