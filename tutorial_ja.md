@@ -588,7 +588,8 @@ GitHub アカウントが必要になります。GitHub にコードをプッシ
 
 ```sh
 gcloud run services delete xenn-web && \
-gcloud run services delete xenn-api
+gcloud run services delete xenn-api && \
+gcloud run jobs delete rails-command --quiet
 ```
 
 ### **Terraformで作成したリソースの削除**
