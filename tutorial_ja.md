@@ -441,7 +441,17 @@ gcloud run jobs execute rails-command --wait
 
 ### **Webアプリケーションの再デプロイ**
 
-以下のコマンドを実行して、Next.jsアプリケーションをデプロイします。
+まず、改めて `.env.production` を作成します。
+
+```sh
+XENN_API_ROOT_URL=$(gcloud run services describe xenn-api --region asia-northeast1 --format json | jq -r '.status.url')
+cd ~/$GITHUB_REPOSITORY_NAME/web && \
+cat << EOF > .env.production
+NEXT_PUBLIC_API_ROOT=$XENN_API_ROOT_URL
+EOF
+```
+
+つぎに以下のコマンドを実行して、Next.jsアプリケーションをデプロイします。
 
 ```sh
 cd ~/$GITHUB_REPOSITORY_NAME/web && \
@@ -472,7 +482,7 @@ services describe xenn-web \
 - 既存の記事の内容が表示されなくなります。編集からそのまま保存しなおすことでHTMLが生成されることを確認してください
 - ※もし表示されなければリロードしてみてください
 
-### **うまくいかない場合**
+### うまくいかない場合
 
 以下のように、あらかじめ修正されたブランチに切り替えます。
 
