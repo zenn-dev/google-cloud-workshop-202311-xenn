@@ -20,6 +20,12 @@ Faker::Config.locale = 'ja'
 end
 
 Article.create!(
+  title: "プロンプト",
+  slug:  "prompt",
+  body_markdown: File.read(Rails.root.join('db', 'prompt.md'))
+)
+
+Article.create!(
     title: "Google Cloud Next Tokyo ’23 で アプリ・生成AI・BigQueryあたりのセッションに参加したレポート",
     slug:  "google-cloud-next-tokyo-2023-report",
     body_markdown: File.read(Rails.root.join('db', 'google_cloud_next.md'))
