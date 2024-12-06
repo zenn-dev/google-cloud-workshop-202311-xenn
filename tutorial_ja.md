@@ -505,7 +505,15 @@ echo "${XENN_WEB_ROOT_URL}/articles/prompt"
 あなたが用意したプロンプトを使って、GeminiにGoogle Cloud Next Tokyoの記事をレビューしてもらいましょう。
 
 ```sh
-curl -X POST https://geminireviewerhttp-pzmaq3dvra-an.a.run.app -H "Content-Type: application/json" -d "{ \"promptUrl\": \"${XENN_WEB_ROOT_URL}/articles/prompt\", \"contentUrl\": \"${XENN_WEB_ROOT_URL}/articles/google-cloud-next-tokyo-2023-report\"}" | jq -r '.text'
+BODY=$(cat << EOF
+{ 
+"promptUrl": "${XENN_WEB_ROOT_URL}/articles/prompt",
+"contentUrl": "${XENN_WEB_ROOT_URL}/articles/google-cloud-next-tokyo-2023-report"
+}
+EOF
+)
+curl -X POST https://geminireviewerhttp-pzmaq3dvra-an.a.run.app \
+-H "Content-Type: application/json" -d "$BODY" | jq -r '.text'
 ```
 
 レビュー結果が返ってくれば成功です。
