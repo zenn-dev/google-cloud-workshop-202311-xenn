@@ -286,7 +286,7 @@ Next.js を修正して再デプロイする一連の流れを試してみまし
 ### **修正（画面説明）**
 
 - Cloud Shell でエディタを開く
-- `web/src/app/articles/[slug]/page.tsx` を修正する
+- `web/src/app/articles/[slug]/page.tsx` で編集ボタンがみえるように、コメントアウトを戻す
 
 ### **再デプロイ**
 
@@ -309,36 +309,75 @@ gcloud run deploy xenn-web \
 
 ## アプリ修正: パフォーマンスUP
 
-### **修正（準備）**
+
+記事詳細画面の表示速度を上げるために、Next.jsで MarkdownをHTMLへ変換しているところ、Markdown保存時にHTMLを変換してDBへ保存することにしました。
+
+API側の修正はあらかじめ用意されたものを利用します。Next.jsの一部のコードを修正していただきます。
+
+以下のコマンドを実行して、コードベースをパフォーマンス改善用に切り替えます。
 
 ```sh
-cd ~/$GITHUB_REPOSITORY_NAME/api
-touch db/migrate/20240824144137_add_body_html_to_article.rb
+cd ~/$GITHUB_REPOSITORY_NAME
+git checkout .
+git switch feat-loading-performance
 ```
 
-以下のようにDBのマイグレーションファイルを修正します。コピーしてください。
+このコードによりAPIが永続化されたHTMLを返すようになります。Next.jsでそれを使うようにしましょう。
 
-```ruby
-class AddBodyHtmlToArticle < ActiveRecord::Migration[7.1]
-  def change
-    add_column :articles, :body_html, :text
-  end
-end
+### **修正**
+
+- Cloud Shell でエディタを開く
+- `web/src/app/articles/[slug]/page.tsx` を修正する
+- `const html = markdownToHtml(article.bodyMarkdown);` を削除する
+- `dangerouslySetInnerHTML={{ __html: html }}` を、`dangerouslySetInnerHTML={{ __html: article.html }}` に修正する
+
+```tsx diff
+import { getArticle, getArticles } from "@requests/articles";
+import { formatDate } from "@utils/dayjs";
+import "zenn-content-css";
+import markdownToHtml from "zenn-markdown-html";
+
+// このファイルではキャッシュ無効
+// refs: https://www.boag.online/notepad/post/how-to-stop-next-js-app-router-api-endpoint-caching
+export const revalidate = 0;
+
+export default async function Page({ params }: { params: { slug: string } }) {
+  const { article } = await getArticle({ slug: params.slug });
+  // const html = markdownToHtml(article.bodyMarkdown); // この行を削除
+  return (
+    <main>
+      <nav className="flex items-end justify-between h-[48px]">
+        <a href="/articles" className="text-xl font-bold">
+          Xenn
+        </a>
+        <a
+          href={`/articles/${article.slug}/edit`}
+          className="text-md font-bold bg-purple-700 px-4 py-2 rounded-sm"
+        >
+          編集する
+        </a>
+      </nav>
+      <div className="mt-24">
+        <h2 className="text-4xl font-bold py-4">{article.title}</h2>
+        <p className={`text-lg text-gray-400`}>
+          {formatDate(article.createdAt, { format: "YYYY年MM月DD日" })}
+          に作成
+        </p>
+      </div>
+      <article className="mt-16 pb-64">
+        <div
+          className="znc bg-gray-700 p-8"
+          dangerouslySetInnerHTML={{ __html: article.html }} // article.htmlを使うように修正
+        />
+      </article>
+    </main>
+  );
+}
 ```
 
-### **修正（画面説明）**
+### **Ruby on Railsアプリのデプロイ**
 
-記事詳細画面の表示速度を上げるために、Next.jsで MarkdownをHTMLへ変換しているところ、Markdown保存時にHTMLを変換してDBへ保存することにしました。画面の説明に従い、以下を修正してください。
-
-- Articleモデルを修正
-  - Rails で Markdown を保存するときにHTMLへ変換して保存するよう修正
-  - 外部のMarkdown変換ロジック（Cloud Run 関数）を使う
-- HTMLを返すようにシリアライザ・コントローラーを修正
-- Next.js でHTMLを使い、変換ロジックは破棄するように修正
-
-### 再デプロイ
-
-**前回デプロイ時と同じコマンドでデプロイします。**
+APIのほかに、Cloud Run Jobs をデプロイします。Cloud Run Jos で、DBマイグレーションを実行します。
 
 ```sh
 cd ~/$GITHUB_REPOSITORY_NAME/api && \
@@ -379,9 +418,7 @@ gcloud run deploy xenn-api \
 gcloud run jobs execute rails-command --wait
 ```
 
-### Webアプリケーションの再デプロイ
-
-### デプロイ
+### **Webアプリケーションの再デプロイ**
 
 以下のコマンドを実行して、Next.jsアプリケーションをデプロイします。
 
@@ -403,6 +440,19 @@ gcloud run deploy xenn-web \
 - 新しい記事が作成できることを確認してください
 - 既存の記事の内容が表示されなくなります。編集からそのまま保存しなおすことでHTMLが生成されることを確認してください
 - ※もし表示されなければリロードしてみてください
+
+### うまくいかない場合
+
+以下のように、あらかじめ修正されたブランチに切り替えます。
+
+```sh
+git checkout .
+git switch advanced
+```
+
+その後、このステップの「Ruby on Railsアプリのデプロイ」「DBマイグレーションの実行」「Webアプリケーションのデプロイ」を実行してみてください。
+
+
 
 ## Geminiによるレポート出力体験
 
