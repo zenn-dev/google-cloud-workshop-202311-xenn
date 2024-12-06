@@ -352,7 +352,9 @@ git switch feat-loading-performance
 - `const html = markdownToHtml(article.bodyMarkdown);` を削除する
 - `dangerouslySetInnerHTML={{ __html: html }}` を、`dangerouslySetInnerHTML={{ __html: article.bodyHtml }}` に修正する
 
-```tsx diff
+修正点がわからない場合は、以下全文をコピペしてもOKです。
+
+```tsx
 import { getArticle, getArticles } from "@requests/articles";
 import { formatDate } from "@utils/dayjs";
 import "zenn-content-css";
@@ -489,7 +491,7 @@ git switch advanced
 
 GeminiはWeb API経由でも使えます。Cloud Run 関数に実装されたレビュー機能を使って、あなたの構築したブログ記事をレビューしてもらいましょう。
 
-###  **プロンプトページのURLを入れる**
+###  **プロンプトページの内容を編集する**
 
 次のページを編集しましょう。
 
@@ -503,9 +505,7 @@ echo "${XENN_WEB_ROOT_URL}/articles/prompt"
 あなたが用意したプロンプトを使って、GeminiにGoogle Cloud Next Tokyoの記事をレビューしてもらいましょう。
 
 ```sh
-curl -X POST https://geminireviewerhttp-222628783481.asia-northeast1.run.app \
--H "Content-Type: application/json" \
--d "{ \"promptUrl\": \"${XENN_WEB_ROOT_URL}/articles/prompt\", \"contentUrl\": \"${XENN_WEB_ROOT_URL}/articles/google-cloud-next-tokyo-2023-report\"}" | jq -r '.text'
+curl -X POST https://geminireviewerhttp-pzmaq3dvra-an.a.run.app -H "Content-Type: application/json" -d "{ \"promptUrl\": \"${XENN_WEB_ROOT_URL}/articles/prompt\", \"contentUrl\": \"${XENN_WEB_ROOT_URL}/articles/google-cloud-next-tokyo-2023-report\"}" | jq -r '.text'
 ```
 
 レビュー結果が返ってくれば成功です。
