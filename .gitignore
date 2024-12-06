@@ -1,3 +1,4 @@
 gemini-reviewer-http
 .DS_Store
 .terraform.lock.hcl
+.env.production
