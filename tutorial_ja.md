@@ -329,7 +329,7 @@ git switch feat-loading-performance
 - Cloud Shell でエディタを開く
 - `google-cloud-workshop-202311-xenn/web/src/app/articles/[slug]/page.tsx` を修正する
 - `const html = markdownToHtml(article.bodyMarkdown);` を削除する
-- `dangerouslySetInnerHTML={{ __html: html }}` を、`dangerouslySetInnerHTML={{ __html: article.html }}` に修正する
+- `dangerouslySetInnerHTML={{ __html: html }}` を、`dangerouslySetInnerHTML={{ __html: article.bodyHtml }}` に修正する
 
 ```tsx diff
 import { getArticle, getArticles } from "@requests/articles";
@@ -367,7 +367,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <article className="mt-16 pb-64">
         <div
           className="znc bg-gray-700 p-8"
-          dangerouslySetInnerHTML={{ __html: article.html }} // article.htmlを使うように修正
+          dangerouslySetInnerHTML={{ __html: article.bodyHtml }} // article.bodyHtmlを使うように修正
         />
       </article>
     </main>
